@@ -5,6 +5,8 @@ public class PersonModel {
     public String first_name;
     public String last_name;
 
+    public PersonModel() {}
+    
     public PersonModel(int id, String firstName, String lastName) {
         this.id = id;
         this.first_name = firstName;

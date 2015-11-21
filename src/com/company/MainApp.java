@@ -1,11 +1,11 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileWriter;
+import java.util.ArrayList;
 
 public class MainApp {
 
     public static void main(String[] args) {
+
 
         PersonDAO_MySQL person = new PersonDAO_MySQL();
 //        person.insertDB(new PersonModel(0, "jag", "ru"));
@@ -14,19 +14,22 @@ public class MainApp {
 //        System.out.println(person.selectDB());
 
 
-        Utils resultPerson = new Utils(person.selectDB());
+        Utils utils = new Utils(person.selectDB());
         System.out.println("===== CSV =====");
-        resultPerson.printCSV();
-        resultPerson.saveCSV();
+//        utils.printCSV();
+//        utils.saveCSV();
 
         System.out.println("===== XML =====");
-        resultPerson.printXML();
-        resultPerson.saveXML();
+//        utils.printXML();
+//        utils.saveXML();
 
         System.out.println("===== JSON =====");
-        resultPerson.printJSON();
-        resultPerson.saveJSON();
-        
+ //       utils.printJSON();
+ //       utils.saveJSON();
+
+        ArrayList<PersonModel> arrayListPerson = new ArrayList<PersonModel>();
+        JSONParser Parser = new JSONParser();
+        System.out.println(Parser.parse());
 
     }
 }
