@@ -28,8 +28,14 @@ public class MainApp {
  //       utils.saveJSON();
 
         ArrayList<PersonModel> arrayListPerson = new ArrayList<PersonModel>();
-        JSONParser Parser = new JSONParser();
-        System.out.println(Parser.parse());
+//        JSONParser Parser = new JSONParser();
+//        System.out.println(Parser.parse());
+        
+//        CSVParser parser = new CSVParser();
+//        System.out.println(parser.parse());
 
+        XMLParser parser = new XMLParser();
+        System.out.println(parser.parse());
+        
     }
 }

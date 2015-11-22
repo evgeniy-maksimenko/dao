@@ -1,39 +1,40 @@
 package com.company;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class JSONParser {
     ArrayList<PersonModel> arrayListPerson = new ArrayList<PersonModel>();
 
     public ArrayList parse() {
-        parseJson(new Utils().readFromFile("person.json"));
+        parseJson(readFromFile("person.json"));
         return arrayListPerson;
     }
 
-    public String substring(String content) {
-        if (content.startsWith("\"") && content.endsWith("\"")) {
-            return content.substring(1, content.length() - 1);
+    public String parseJson(String content) {
+        if (content.startsWith("[") && content.endsWith("]")) {
+            return parseJson(content.substring(1, content.length() - 1));
         } else {
+            int pos = 0;
+            while (pos < content.length()) {
+                if (content.charAt(pos) == '}') {
+                    String obj;
+                    if (content.charAt(0) == ',') {
+                        obj = content.substring(1, pos + 1);
+                    } else {
+                        obj = content.substring(0, pos + 1);
+                    }
+                    parseJsonAList(obj.replaceAll("\\s", ""));
+                    return parseJson(content.substring(pos + 1));
+                } else {
+                    pos++;
+                }
+            }
             return content;
         }
-    }
-
-    public String getJsonKeyValue(String key, String currentLine) {
-        final String DELIMETER = ":";
-
-        String[] arrayDef = currentLine.split(DELIMETER);
-
-        return substring(arrayDef[0]).equals(key) ? substring(arrayDef[1]) : "";
-
-    }
-
-    public String[] getJsonValue(String currentLine) {
-        final String DELIMETER = ":";
-
-        String[] arrayDef = currentLine.split(DELIMETER);
-
-        return new String[]{substring(arrayDef[0]), substring(arrayDef[1])};
-
     }
 
     public String parseJsonAList(String content) {
@@ -53,32 +54,54 @@ public class JSONParser {
                 if (last_name.isEmpty()) last_name = getJsonKeyValue("last_name", aStr);
             }
 
-            arrayListPerson.add(new PersonModel(Integer.parseInt(id), first_name, last_name));
-
+            arrayListPerson.add(
+                    new PersonModel(
+                            Integer.parseInt(id), 
+                            first_name, 
+                            last_name));
+            
             return content;
         }
     }
 
-    public String parseJson(String content) {
-        if (content.startsWith("[") && content.endsWith("]")) {
-            return parseJson(content.substring(1, content.length() - 1));
+    public String substring(String content) {
+        if (content.startsWith("\"") && content.endsWith("\"")) {
+            return content.substring(1, content.length() - 1);
         } else {
-            int pos = 0;
-            while (pos < content.length()) {
-                if (content.charAt(pos) == '}') {
-                    String obj;
-                    if (content.charAt(0) == ',') {
-                        obj = content.substring(1, pos + 1);
-                    } else {
-                        obj = content.substring(0, pos + 1);
-                    }
-                    parseJsonAList(obj.replaceAll(" ", ""));
-                    return parseJson(content.substring(pos + 1));
-                } else {
-                    pos++;
-                }
-            }
             return content;
         }
+    }
+
+    public String getJsonKeyValue(String key, String currentLine) {
+        final String DELIMETER = ":";
+
+        String[] arrayDef = currentLine.split(DELIMETER);
+        return substring(arrayDef[0]).equals(key) ? substring(arrayDef[1]) : "";
+    }
+
+    public String[] getJsonValue(String currentLine) {
+        final String DELIMETER = ":";
+
+        String[] arrayDef = currentLine.split(DELIMETER);
+        return new String[]{substring(arrayDef[0]), substring(arrayDef[1])};
+    }
+
+    public String readFromFile(String Name) {
+
+        String result = "";
+
+        try {
+            BufferedReader buffer = new BufferedReader(new FileReader(Name));
+            String currentLine;
+            while ((currentLine = buffer.readLine()) != null) {
+                return currentLine;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }

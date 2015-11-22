@@ -3,15 +3,11 @@ package com.company;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Utils {
     ArrayList<PersonModel> arrayListPerson = new ArrayList<PersonModel>();
 
-    public Utils() {
-
-
-    }
+    public Utils() {}
 
     public Utils(ArrayList<PersonModel> initArrayListPerson) {
         arrayListPerson = initArrayListPerson;
@@ -19,8 +15,8 @@ public class Utils {
 
     public String toCSV() {
         String result = "id,first_name,last_name";
-        for (int i = 0; i < arrayListPerson.size(); i++) {
-            result += "\n" + arrayListPerson.get(i).id + "," + arrayListPerson.get(i).first_name + "," + arrayListPerson.get(i).last_name;
+        for (PersonModel anArrayListPerson : arrayListPerson) {
+            result += "\n" + anArrayListPerson.id + "," + anArrayListPerson.first_name + "," + anArrayListPerson.last_name;
         }
         return result;
     }
@@ -28,11 +24,11 @@ public class Utils {
     public String toXML() {
         String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         result += "<Persons>";
-        for (int i = 0; i < arrayListPerson.size(); i++) {
+        for (PersonModel anArrayListPerson : arrayListPerson) {
             result += "\n\t<Person>";
-            result += "\n\t\t<id>" + arrayListPerson.get(i).id + "</id>";
-            result += "\n\t\t<first_name>" + arrayListPerson.get(i).first_name + "</first_name>";
-            result += "\n\t\t<last_name>" + arrayListPerson.get(i).last_name + "</last_name>";
+            result += "\n\t\t<id>" + anArrayListPerson.id + "</id>";
+            result += "\n\t\t<first_name>" + anArrayListPerson.first_name + "</first_name>";
+            result += "\n\t\t<last_name>" + anArrayListPerson.last_name + "</last_name>";
             result += "\n\t</Person>";
         }
         result += "\n</Persons>";
@@ -91,41 +87,5 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-
-    public void loadCSV() {
-        parseCSVtoAList(readFromFile("person.csv"));
-    }
-
-    private void parseCSVtoAList(String s) {
-
-    }
-
-
-
-
-
-
-
-
-    public String readFromFile(String Name) {
-
-        String result = "";
-
-        try {
-            BufferedReader buffer = new BufferedReader(new FileReader(Name));
-            String currentLine;
-            while ((currentLine = buffer.readLine()) != null) {
-                return currentLine;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
     }
 }
